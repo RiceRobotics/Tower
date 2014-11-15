@@ -39,6 +39,7 @@ void initMotor(Motor *m, unsigned char port, int out, int reflected) {
 //Allocates memory and initializes a Pid type.
 Pid *newPid() {
 	Pid *p = malloc(sizeof(Pid));
+	p->running = 0;
 	p->setPoint = 0;
 	p->current = 0;
 	p->error = 0;
@@ -67,6 +68,7 @@ Pid *newPid() {
  * @param output The value to be set to the motors
  */
 void initPid(Pid *p, float kP, float kI, float kD) {
+	p->running = 0;
 	p->setPoint = 0;
 	p->current = 0;
 	p->error = 0;
@@ -310,16 +312,18 @@ int autonomousTask(int instruction, int distance, int pow, long timeout) {
 }
 
 void processPid(Pid *pidLoop, int current) {
-	pidLoop->current = current;
-//	printf("Current: %d\n\r", pidLoop->current);
-	pidLoop->error = pidLoop->setPoint - pidLoop->current;
-	pidLoop->integral += pidLoop->error;
-	pidLoop->derivative = pidLoop->lastError - pidLoop->error;
+	if (pidLoop->running) {
+		pidLoop->current = current;
+		//	printf("Current: %d\n\r", pidLoop->current);
+		pidLoop->error = pidLoop->setPoint - pidLoop->current;
+		pidLoop->integral += pidLoop->error;
+		pidLoop->derivative = pidLoop->lastError - pidLoop->error;
 
-	pidLoop->output = speedRegulator((pidLoop->error * pidLoop->kP) +
-			(pidLoop->integral * pidLoop->kI) + (pidLoop->derivative * pidLoop->kD));
+		pidLoop->output = speedRegulator((pidLoop->error * pidLoop->kP) +
+				(pidLoop->integral * pidLoop->kI) + (pidLoop->derivative * pidLoop->kD));
 
-	pidLoop->lastError = pidLoop->error;
+		pidLoop->lastError = pidLoop->error;
+	}
 
 }
 

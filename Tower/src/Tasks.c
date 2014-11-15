@@ -50,13 +50,15 @@ void startPidTask(void *ignore) {
 //		printf("PidTask\n\r");
 		//Manually add each pid loop here
 		processPid(&PidARMLeft, (armPot[0]));
-		ARMBottomLeft.out = PidARMLeft.output;
 		processPid(&PidARMRight, (armPot[1]));
-		ARMBottomRight.out = PidARMRight.output;
+		if(PidARMLeft.running && PidARMRight.running) {
+			ARMBottomLeft.out = PidARMLeft.output;
+			ARMBottomRight.out = PidARMRight.output;
+		}
 
-		printf("SetPoint: %d/%d, Pot L/R: %d/%d, MotorOut %d/%d Out: %f/%f \n\r", PidARMLeft.setPoint,
-				PidARMRight.setPoint, PidARMLeft.current, PidARMRight.current, PidARMLeft.output, PidARMRight.output,
-				PidARMLeft.kI * PidARMLeft.integral, PidARMRight.kI * PidARMRight.integral);
+		printf("SetPoint: %d/%d, Pot L/R: %d/%d, MotorOut %d/%d Running: %d/%d \n\r", PidARMLeft.setPoint,
+				PidARMRight.setPoint, PidARMLeft.current, PidARMRight.current, ARMBottomLeft.out, ARMBottomRight.out,
+				PidARMLeft.running, PidARMRight.running);
 
 		delay(20);
 	}

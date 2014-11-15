@@ -66,7 +66,7 @@ typedef struct motorStruct Motor;
 
 //The basic pid struct
 struct pidStruct {
-//	bool running;
+	int running;
 	int setPoint;
 	int current;
 	float error;

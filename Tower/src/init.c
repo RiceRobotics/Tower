@@ -71,11 +71,6 @@ void initialize() {
 
 	printf("RiceBot Init Done ");
 
-	taskCreate(startIOTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_HIGHEST);
-	taskCreate(startPidTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
-
-	printf("Tasks Made");
-
 	initMotor(&DTFrontLeft, 3, 0, -1);
 	initMotor(&DTFrontRight, 9, 0, 1);
 	initMotor(&DTBackLeft, 2, 0, -1);
@@ -96,6 +91,11 @@ void initialize() {
 
 	initPid(&PidARMLeft, .2, 0, 0);
 	initPid(&PidARMRight, .2, 0, 0);
+
+	taskCreate(startIOTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_HIGHEST);
+	taskCreate(startPidTask, TASK_DEFAULT_STACK_SIZE, NULL, TASK_PRIORITY_DEFAULT);
+	PidARMLeft.running = 1;
+	PidARMRight.running = 1;
 
 	printf("End Init ");
 }

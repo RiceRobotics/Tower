@@ -58,26 +58,30 @@ void operatorControl() {
 		getJoystickForDriveTrain(controlStyle);
 
 		if(joystickGetDigital(1, 6, JOY_UP)) {
+			PidARMLeft.setPoint = min(1700, PidARMLeft.setPoint + 10);
+			PidARMRight.setPoint = min(1700, PidARMRight.setPoint + 10);
 //			ARMTopLeft.out = 127;
 //			ARMTopRight.out = 127;
 //			ARMBottomLeft.out = 127;
 //			ARMBottomRight.out = 127;
 		}
 		else if(joystickGetDigital(1, 6, JOY_DOWN)) {
+			PidARMLeft.setPoint = max(0, PidARMLeft.setPoint - 10);
+			PidARMRight.setPoint = max(0, PidARMRight.setPoint - 10);
 //			ARMTopLeft.out = -127;
 //			ARMTopRight.out = -127;
 //			ARMBottomLeft.out = -127;
 //			ARMBottomRight.out = -127;
 		}
 		else if(joystickGetDigital(1, 8, JOY_UP)) {
-			PidARMLeft.setPoint = min(4096, PidARMLeft.setPoint + 10);
-			PidARMRight.setPoint = min(4096, PidARMRight.setPoint + 10);
+//			PidARMLeft.setPoint = armPot[0];
+//			PidARMRight.setPoint = armPot[1];
 //			ARMBottomLeft.out = 127;
 //			ARMBottomRight.out = 127;
 		}
 		else if(joystickGetDigital(1, 8, JOY_DOWN)) {
-			PidARMLeft.setPoint = max(-100, PidARMLeft.setPoint - 5);
-			PidARMRight.setPoint = max(-100, PidARMLeft.setPoint - 5);
+//			PidARMLeft.running = 0;
+//			PidARMRight.running = 0;
 //			ARMBottomLeft.out = -127;
 //			ARMBottomRight.out = -127;
 		}
